@@ -12,9 +12,10 @@ import androidx.core.view.WindowInsetsCompat
 import buildExpressionTree
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var visor: TextView
+    private lateinit var eVisor: TextView
+    private lateinit var rVisor: TextView
     private val expression = StringBuilder("(1+(2*3))-(4/5)")
-    private val resultText = StringBuilder()
+    private val resultText = StringBuilder("")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,34 +26,39 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        visor = findViewById(R.id.text_visor)
-        visor.text = expression.toString()
+        eVisor = findViewById(R.id.expression_visor)
+        eVisor.text = expression.toString()
+
+        rVisor = findViewById(R.id.result_visor)
+        rVisor.text = resultText.toString()
+
+
     }
 
     fun appendExpression(view: View) {
         val button = view as Button
         val buttonText = button.text.toString()
         expression.append(buttonText)
-        visor.text = expression.toString()
+        eVisor.text = expression.toString()
 
     }
 
     fun removeLastCharacter(view: View) {
         if (expression.isNotEmpty()) {
             expression.deleteCharAt(expression.length - 1)
-            visor.text = expression.toString()
+            eVisor.text = expression.toString()
         }
     }
 
     fun clearEntry(view: View) {
         expression.clear()
-        visor.text = ""
+        eVisor.text = ""
     }
 
     fun clear(view: View) {
         expression.clear()
         resultText.clear()
-        visor.text = ""
+        eVisor.text = ""
     }
 
     // Funções de operação refatoradas para aceitar Doubles
@@ -75,19 +81,26 @@ class MainActivity : AppCompatActivity() {
             num1 / num2
         }
     }
+
     fun percentageFunction(): Double? {
         return null
     }
 
-    fun equalFunction(view: View) {
-        val tree = buildExpressionTree(expression.toString());
-        val finalResult = calculateFinalResult(tree)
-        println(finalResult);
-        if (finalResult != null) {
-            visor.text =finalResult.toString()
-        }
+fun equalFunction(view: View) {
+    val tree = buildExpressionTree(expression.toString())
+    val finalResult = calculateFinalResult(tree)
+    if (finalResult != null) {
+        expression.clear()
+        expression.append(finalResult.toString())
 
+        resultText.clear()
+        resultText.append(finalResult.toString())
+        rVisor.text = resultText.toString()
+    } else {
+        rVisor.text = "Error: Invalid input"
     }
+}
+
     fun calculateFinalResult(node: ExpressionNode): Double? {
         when (node) {
             is ExpressionNode.NumberNode -> {
