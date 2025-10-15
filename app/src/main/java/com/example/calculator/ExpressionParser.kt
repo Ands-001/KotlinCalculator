@@ -1,4 +1,3 @@
-// A sealed class que definimos acima
 sealed class ExpressionNode {
     data class OperatorNode(
         val operator: Char,

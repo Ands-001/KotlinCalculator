@@ -61,7 +61,6 @@ class MainActivity : AppCompatActivity() {
         eVisor.text = ""
     }
 
-    // Funções de operação refatoradas para aceitar Doubles
     fun additionFunction(num1: Double, num2: Double): Double {
         return num1 + num2
     }
@@ -112,14 +111,12 @@ fun equalFunction(view: View) {
 
                 val rightResult = calculateFinalResult(node.right)
 
-                // 3. Se qualquer um dos lados falhou (retornou null), propaga o erro.
                 if (leftResult == null || rightResult == null) {
                     resultText.clear()
                     resultText.append("Error: Invalid input")
                     return null
                 }
 
-                // 4. Com os resultados da esquerda e direita em mãos, aplica o operador.
                 return when (node.operator) {
                     '+' -> additionFunction(leftResult, rightResult)
                     '-' -> subtractionFunction(leftResult, rightResult)
